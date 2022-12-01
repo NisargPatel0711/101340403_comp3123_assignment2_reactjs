@@ -1,17 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+const BACKEND_URL = "https://101340403-comp-3123-assignment1.vercel.app"
 
 export default function EmployeeList() {
-    axios.defaults.headers.post["Content-Type"] =
-        "application/json;charset=utf-8";
-    axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
     const [employees, setEmployees] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
             const employees = await axios.get(
-                "http://101340403-comp-3123-assignment1.vercel.app/api/emp/employees"
+                BACKEND_URL + "/api/emp/employees"
             );
             setEmployees(employees.data);
         }
@@ -21,7 +19,7 @@ export default function EmployeeList() {
     return (
         <>
             <h1 className="text-center">Employee List</h1>
-            <Link className="btn btn-success" to="/add-employee">
+            <Link className="btn btn-success" to="/add">
                 Add Employee
             </Link>
 
@@ -47,23 +45,23 @@ export default function EmployeeList() {
                             <td>{employee.gender}</td>
                             <td>{employee.salary}</td>
                             <td>
-                                <a
+                                <Link
                                     className="btn btn-primary me-3"
-                                    href={`/view/${employee._id}`}
+                                    to={`/view/${employee._id}`}
                                 >
-                                    <i className="bi bi-eye-fill"></i>
+                                    <i className="bi bi-eye-fill me-2"></i>
                                     View
-                                </a>
+                                </Link>
 
-                                <a
+                                <Link
                                     className="btn btn-secondary me-3"
-                                    href={`/update/${employee._id}`}
+                                    to={`/update/${employee._id}`}
                                 >
-                                    <i class="bi bi-pencil-square"></i>
+                                    <i className="bi bi-pencil-square me-2"></i>
                                     Update
-                                </a>
+                                </Link>
                                 <button className="btn btn-danger">
-                                    <i class="bi bi-trash3-fill"></i>
+                                    <i className="bi bi-trash3-fill me-2"></i>
                                     Delete
                                 </button>
                             </td>
