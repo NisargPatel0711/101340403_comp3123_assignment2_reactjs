@@ -24,9 +24,8 @@ export default function ViewEmployee() {
     }, [loading, id]);
 
     return (
-        <>
+        <div className="container mt-3">
             <h1 className="text-center">View Employee</h1>
-
             <div className="d-flex justify-content-center align-items-center mt-4">
                 <div className="border rounded p-4  w-50">
                     <div className="d-flex justify-content-center">
@@ -77,6 +76,6 @@ export default function ViewEmployee() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

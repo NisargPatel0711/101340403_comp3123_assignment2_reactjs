@@ -114,7 +114,7 @@ export default function EmployeeList() {
     };
 
     return (
-        <>
+        <div className="container mt-3">
             <h1 className="text-center">Employee List</h1>
             <Link className="btn btn-success" to="/add">
                 Add Employee
@@ -176,6 +176,6 @@ export default function EmployeeList() {
                     ))}
                 </tbody>
             </table>
-        </>
+        </div>
     );
 }

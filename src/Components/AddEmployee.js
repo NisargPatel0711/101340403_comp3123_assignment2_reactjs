@@ -129,7 +129,7 @@ export default function AddEmployee({ type }) {
     };
 
     return (
-        <>
+        <div className="container mt-3">
             <h1 className="text-center">
                 {isEdit ? "Update" : "Add"} Employee
             </h1>
@@ -258,6 +258,6 @@ export default function AddEmployee({ type }) {
                 title="Success"
                 message="Employee updated successfully!"
             />
-        </>
+        </div>
     );
 }
