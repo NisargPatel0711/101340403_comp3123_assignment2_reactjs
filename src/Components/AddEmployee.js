@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const BACKEND_URL = "https://101340403-comp-3123-assignment1.vercel.app";
 
@@ -21,52 +21,33 @@ export default function AddEmployee() {
             gender: genderRef.current.value,
             salary: salaryRef.current.value,
         };
-        if (emailError) {
-            const alertPlaceholder = document.getElementById(
-                "liveAlertPlaceholder"
-            );
-            const wrapper = document.createElement("div");
-            wrapper.innerHTML = [
-                '<div className="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">',
-                '<i className="bi bi-exclamation-triangle-fill me-3 fs-1"></i>',
-                "  <div><span>Employee already exists with same email.</span><br><span>Please enter different email address.</span></div>",
-                "</div>",
-            ].join("");
-            alertPlaceholder.append(wrapper);
-            const input = document.getElementById("email");
-            input.focus();
-            setTimeout(() => {
-                const div = document.getElementById("liveAlertPlaceholder");
 
-                div.remove();
-            }, 8000);
-        } else {
+        try {
             await axios.post(BACKEND_URL + "/api/emp/employees", employee);
             navigate("/");
+        } catch (error) {
+            if (error.response.data.code === 11000) {
+                const alertPlaceholder = document.getElementById(
+                    "liveAlertPlaceholder"
+                );
+                const wrapper = document.createElement("div");
+                wrapper.id = "alertWrapper";
+                wrapper.innerHTML = [
+                    '<div class="alert alert-danger alert-dismissible d-flex align-items-center" role="alert">',
+                    '<i class="bi bi-exclamation-triangle-fill me-3 fs-1"></i>',
+                    "  <div><span>Employee already exists with same email.</span><br><span>Please enter different email address.</span></div>",
+                    "</div>",
+                ].join("");
+                alertPlaceholder.append(wrapper);
+                const input = document.getElementById("email");
+                input.focus();
+                setTimeout(() => {
+                    const div = document.getElementById("alertWrapper");
+                    div.remove();
+                }, 8000);
+            }
         }
     };
-
-    const emailError = (email) => {
-        if (
-            employees.find(
-                (employee) => employee.email === emailRef.current.value
-            )
-        ) {
-            return true;
-        }
-    };
-
-    const [employees, setEmployees] = useState([]);
-
-    useEffect(() => {
-        async function fetchData() {
-            const employees = await axios.get(
-                BACKEND_URL + "/api/emp/employees"
-            );
-            setEmployees(employees.data);
-        }
-        fetchData();
-    }, []);
 
     return (
         <>

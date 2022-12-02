@@ -4,16 +4,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import AddEmployee from "./Components/AddEmployee";
 import EmployeeList from "./Components/EmployeeList";
+import ViewEmployee from "./Components/ViewEmployee";
 
 function App() {
     return (
         <>
             <Navbar />
-            <div className="container">
+            <div className="container mt-3">
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<EmployeeList />} />
                         <Route path="/add" element={<AddEmployee />} />
+                        <Route path="/view/:id" element={<ViewEmployee />} />
                     </Routes>
                 </BrowserRouter>
             </div>
