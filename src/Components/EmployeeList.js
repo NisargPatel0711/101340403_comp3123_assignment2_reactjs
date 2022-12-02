@@ -136,7 +136,7 @@ export default function EmployeeList() {
 
                                 <Link
                                     className="btn btn-secondary me-3"
-                                    to={`/update/${employee._id}`}
+                                    to={`/edit/${employee._id}`}
                                 >
                                     <i className="bi bi-pencil-square me-2"></i>
                                     Update
