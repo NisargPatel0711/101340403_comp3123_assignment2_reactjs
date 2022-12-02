@@ -1,10 +1,34 @@
 import axios from "axios";
-import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Modal } from "bootstrap";
 const BACKEND_URL = "https://101340403-comp-3123-assignment1.vercel.app";
 
-export default function AddEmployee() {
+export default function AddEmployee({ type }) {
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    const isEdit = type === "edit" ? true : false;
+
+    const [employee, setEmployee] = useState({
+        first_name: "",
+        last_name: "",
+        email: "",
+        gender: "",
+        salary: "",
+    });
+
+    useEffect(() => {
+        if (isEdit) {
+            async function fetchEmployee() {
+                const result = await axios.get(
+                    BACKEND_URL + `/api/emp/employees/${id}`
+                );
+                setEmployee(result.data);
+            }
+            fetchEmployee();
+        }
+    }, [isEdit, id]);
 
     const firstNameRef = useRef();
     const lastNameRef = useRef();
@@ -14,7 +38,7 @@ export default function AddEmployee() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const employee = {
+        const newEmployee = {
             first_name: firstNameRef.current.value,
             last_name: lastNameRef.current.value,
             email: emailRef.current.value,
@@ -23,7 +47,19 @@ export default function AddEmployee() {
         };
 
         try {
-            await axios.post(BACKEND_URL + "/api/emp/employees", employee);
+            if (isEdit) {
+                await axios.put(
+                    BACKEND_URL + "/api/emp/employees/" + id,
+                    employee
+                );
+                new Modal(document.getElementById("edit")).show();
+            } else {
+                await axios.post(
+                    BACKEND_URL + "/api/emp/employees",
+                    newEmployee
+                );
+                new Modal(document.getElementById("add")).show();
+            }
             navigate("/");
         } catch (error) {
             if (error.response.data.code === 11000) {
@@ -49,9 +85,54 @@ export default function AddEmployee() {
         }
     };
 
+    const ModalComponent = ({ id, title, message }) => {
+        return (
+            <div
+                class="modal fade"
+                id={id}
+                data-bs-backdrop="static"
+                data-bs-keyboard="false"
+                tabindex="-1"
+                aria-labelledby="staticBackdropLabel"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1
+                                class="modal-title fs-5 text-success"
+                                id="staticBackdropLabel"
+                            >
+                                {title}
+                            </h1>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">{message}</div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-success"
+                                data-bs-dismiss="modal"
+                            >
+                                OK
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <>
-            <h1 className="text-center">Add Employee</h1>
+            <h1 className="text-center">
+                {isEdit ? "Update" : "Add"} Employee
+            </h1>
             <div className="d-flex justify-content-center align-items-center">
                 <div className="border rounded p-5  w-50">
                     <div id="liveAlertPlaceholder"></div>
@@ -64,8 +145,12 @@ export default function AddEmployee() {
                                 type="text"
                                 className="form-control"
                                 id="firstName"
-                                ref={firstNameRef}
                                 required={true}
+                                ref={firstNameRef}
+                                value={isEdit ? employee.first_name : null}
+                                onChange={(e) =>
+                                    setEmployee({ first_name: e.target.value })
+                                }
                                 placeholder="Enter your first name here..."
                             />
                         </div>
@@ -77,8 +162,12 @@ export default function AddEmployee() {
                                 type="text"
                                 className="form-control"
                                 id="lastName"
-                                ref={lastNameRef}
                                 required={true}
+                                ref={lastNameRef}
+                                value={isEdit ? employee.last_name : null}
+                                onChange={(e) =>
+                                    setEmployee({ last_name: e.target.value })
+                                }
                                 placeholder="Enter your last name here..."
                             />
                         </div>
@@ -92,6 +181,10 @@ export default function AddEmployee() {
                                 id="email"
                                 ref={emailRef}
                                 required={true}
+                                value={isEdit ? employee.email : null}
+                                onChange={(e) =>
+                                    setEmployee({ email: e.target.value })
+                                }
                                 placeholder="Enter your email address here..."
                             />
                         </div>
@@ -104,6 +197,10 @@ export default function AddEmployee() {
                                 aria-label="Default select example"
                                 ref={genderRef}
                                 required={true}
+                                value={isEdit ? employee.gender : null}
+                                onChange={(e) =>
+                                    setEmployee({ gender: e.target.value })
+                                }
                             >
                                 <option selected disabled value="">
                                     Choose gender
@@ -122,6 +219,10 @@ export default function AddEmployee() {
                                 className="form-control"
                                 id="salary"
                                 ref={salaryRef}
+                                value={isEdit ? employee.salary : null}
+                                onChange={(e) =>
+                                    setEmployee({ salary: e.target.value })
+                                }
                                 required={true}
                                 step="any"
                                 placeholder="Enter your annual salary here..."
@@ -147,6 +248,16 @@ export default function AddEmployee() {
                     </form>
                 </div>
             </div>
+            <ModalComponent
+                id={"add"}
+                title="Success"
+                message="New Employee added successfully!"
+            />
+            <ModalComponent
+                id={"edit"}
+                title="Success"
+                message="Employee updated successfully!"
+            />
         </>
     );
 }

@@ -50,11 +50,30 @@ export default function EmployeeList() {
                             ></button>
                         </div>
                         <div className="modal-body">
-                            <p>First name : {employee.first_name}</p>
-                            <p>Last name : {employee.last_name}</p>
-                            <p>Email : {employee.email}</p>
-                            <p>Gender : {employee.gender}</p>
-                            <p>Salary : {employee.salary}</p>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">First Name</th>
+                                        <td>{employee.first_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Last Name</th>
+                                        <td>{employee.last_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Email</th>
+                                        <td>{employee.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Gender</th>
+                                        <td>{employee.gender}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Salary</th>
+                                        <td>$ {employee.salary}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div className="modal-footer">
                             <form>
@@ -65,6 +84,7 @@ export default function EmployeeList() {
                                         handleDelete(event, employee._id)
                                     }
                                 >
+                                    <i className="bi bi-trash3-fill me-2"></i>
                                     Delete
                                 </button>
                             </form>
@@ -73,6 +93,7 @@ export default function EmployeeList() {
                                 className="btn btn-secondary"
                                 data-bs-dismiss="modal"
                             >
+                                <i className="bi bi-x-circle-fill me-2"></i>
                                 Cancel
                             </button>
                         </div>
