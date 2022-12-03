@@ -37,7 +37,7 @@ export default function ViewEmployee() {
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
-                    <table class="table table-bordered">
+                    <table className="table table-bordered">
                         <tbody>
                             <tr>
                                 <th scope="row">First Name</th>

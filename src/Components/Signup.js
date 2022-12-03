@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./auth";
 import background from "./background.svg";
 const BACKEND_URL = "https://101340403-comp-3123-assignment1.vercel.app";
 
 export default function Signup() {
+    const navigate = useNavigate();
+    const auth = useAuth();
     async function handleSignup(event) {
         event.preventDefault();
         const user = {
@@ -12,10 +15,11 @@ export default function Signup() {
             password: passwordRef.current.value,
             email: emailRef.current.value,
         };
-        console.log(user);
         try {
             await axios.post(BACKEND_URL + "/api/user/signup", user);
-            console.log("signup success");
+            localStorage.setItem("employee-system", JSON.stringify(user));
+            auth.login({username: user.username, password: user.password});
+            navigate("/", { replace: true });
         } catch (error) {
             if (error.response.status === 400) {
                 const alertPlaceholder = document.getElementById(

@@ -5,26 +5,59 @@ import Navbar from "./Components/Navbar";
 import AddEmployee from "./Components/AddEmployee";
 import EmployeeList from "./Components/EmployeeList";
 import ViewEmployee from "./Components/ViewEmployee";
-import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import Login from "./Components/Login";
+import { AuthProvider } from "./Components/auth";
+import { RequireAuth } from "./Components/RequireAuth";
 
 function App() {
+
     return (
-        <>
+        <AuthProvider>            
             <BrowserRouter>
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/" element={<EmployeeList />} />
-                    <Route path="/add" element={<AddEmployee />} />
-                    <Route path="/view/:id" element={<ViewEmployee />} />
+                    <Route
+                        path="/"
+                        element={
+                            <RequireAuth>
+                                <Navbar />
+                                <EmployeeList />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/add"
+                        element={
+                            <RequireAuth>
+                                <Navbar />
+                                <AddEmployee />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="/view/:id"
+                        element={
+                            <RequireAuth>
+                                <Navbar />
+                                <ViewEmployee />
+                            </RequireAuth>
+                        }
+                    />
                     <Route
                         path="/edit/:id"
-                        element={<AddEmployee type="edit" />}
+                        element={
+                            <RequireAuth>
+                                <Navbar />
+                                <AddEmployee type="edit" />
+                            </RequireAuth>
+                        }
                     />
+                    <Route path="*" element={<Login />} />
                 </Routes>
             </BrowserRouter>
-        </>
+        </AuthProvider>
     );
 }
 

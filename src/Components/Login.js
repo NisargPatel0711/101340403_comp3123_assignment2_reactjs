@@ -1,11 +1,15 @@
 import axios from "axios";
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./auth";
 import background from "./background.svg";
 const BACKEND_URL = "https://101340403-comp-3123-assignment1.vercel.app";
 
 export default function Login() {
-    async function handleLogin(event) {
+    const navigate = useNavigate();
+    const auth = useAuth();
+
+    async function handleLogin(event, remember) {
         event.preventDefault();
         const user = {
             username: usernameRef.current.value,
@@ -13,7 +17,13 @@ export default function Login() {
         };
         try {
             await axios.post(BACKEND_URL + "/api/user/login", user);
-            console.log("Login success");
+            if (rememberRef.current.checked === true) {
+                localStorage.setItem("employee-system", JSON.stringify(user));
+            } else {
+                sessionStorage.setItem("employee-system", JSON.stringify(user));
+            }
+            auth.login(user);
+            navigate("/", { replace: true });
         } catch (error) {
             if (error.response.status === 404) {
                 const alertPlaceholder = document.getElementById(
@@ -46,6 +56,7 @@ export default function Login() {
 
     const usernameRef = useRef();
     const passwordRef = useRef();
+    const rememberRef = useRef();
 
     return (
         <div
@@ -108,7 +119,20 @@ export default function Login() {
                             Please enter correct username or password.
                         </div>
                     </div>
-                    <div className="mb-4">
+                    <div className="form-check mb-4 ms-2">
+                        <label className="form-check-label" htmlFor="remember">
+                            Remember me
+                        </label>
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="remember"
+                            defaultChecked
+                            ref={rememberRef}
+                        />
+                    </div>
+                    <div className="mt-4 mb-4">
                         <button
                             type="submit"
                             className="btn btn-primary btn-lg w-100"

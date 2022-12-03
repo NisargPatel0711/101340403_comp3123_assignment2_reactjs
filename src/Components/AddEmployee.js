@@ -88,7 +88,7 @@ export default function AddEmployee({ type }) {
     const ModalComponent = ({ id, title, message }) => {
         return (
             <div
-                class="modal fade"
+                className="modal fade"
                 id={id}
                 data-bs-backdrop="static"
                 data-bs-keyboard="false"
@@ -96,27 +96,27 @@ export default function AddEmployee({ type }) {
                 aria-labelledby="staticBackdropLabel"
                 aria-hidden="true"
             >
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
                             <h1
-                                class="modal-title fs-5 text-success"
+                                className="modal-title fs-5 text-success"
                                 id="staticBackdropLabel"
                             >
                                 {title}
                             </h1>
                             <button
                                 type="button"
-                                class="btn-close"
+                                className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <div class="modal-body">{message}</div>
-                        <div class="modal-footer">
+                        <div className="modal-body">{message}</div>
+                        <div className="modal-footer">
                             <button
                                 type="button"
-                                class="btn btn-success"
+                                className="btn btn-success"
                                 data-bs-dismiss="modal"
                             >
                                 OK

@@ -50,7 +50,7 @@ export default function EmployeeList() {
                             ></button>
                         </div>
                         <div className="modal-body">
-                            <table class="table table-bordered">
+                            <table className="table table-bordered">
                                 <tbody>
                                     <tr>
                                         <th scope="row">First Name</th>

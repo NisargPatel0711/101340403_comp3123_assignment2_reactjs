@@ -1,20 +1,31 @@
 import React from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "./auth";
 
 export default function Navbar() {
+    const auth = useAuth()
+    const navigate = useNavigate()
+
+    function handleLogout(event) {
+        event.preventDefault();
+        auth.logout()
+        navigate('/login', {replace: true})
+    }
+
     return (
         <>
             <header className="App-header">
                 <nav className="navbar navbar-expand-lg bg-light">
                     <div className="container-fluid">
-                        <a className="navbar-brand" href="">
+                        <span className="navbar-brand" href="">
                             Employee Management System
-                        </a>
+                        </span>
                         <div>
-                            <ul className="navbar-nav">
+                            <ul className="navbar-nav d-flex align-items-center">
                                 <li className="nav-item">
-                                    <a
+                                    <button
                                         className="btn btn-primary d-flex justify-content-center align-items-center"
-                                        href="#"
+                                        onClick={(event) => handleLogout(event)}
                                     >
                                         Log Out &nbsp;
                                         <svg
@@ -34,7 +45,7 @@ export default function Navbar() {
                                                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
                                             />
                                         </svg>
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
