@@ -38,7 +38,7 @@ export default function AddEmployee({ type }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const newEmployee = {
+        const employee = {
             first_name: firstNameRef.current.value,
             last_name: lastNameRef.current.value,
             email: emailRef.current.value,
@@ -56,7 +56,7 @@ export default function AddEmployee({ type }) {
             } else {
                 await axios.post(
                     BACKEND_URL + "/api/emp/employees",
-                    newEmployee
+                    employee
                 );
                 new Modal(document.getElementById("add")).show();
             }
