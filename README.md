@@ -1,1 +1,1 @@
-[embed]./Screenshots.pdf[/embed]
+(./Screenshots.pdf)
